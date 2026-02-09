@@ -23,27 +23,22 @@ void engineDirection(Engine *engine, bool direction) {
 }
 
 void engineFindHome(Engine *engine) {
-    engine->validHome = false;
-    
-    if (DEBUG) {
-        Serial.println("Finding home...");
-    }
     engineDirection(engine, BACKWARD);
-    while (!engine->validHome)
+    // If the switch is already pressed, the FALLING interrupt won't fire.
+    if (digitalRead(engine->config.pinInputHome) == LOW) {
+        engine->validHome = true;
+    }
+    if (!engine->validHome)
     {
         engineRunning(engine, true);
+    } else {
+        engineRunning(engine, false);
     }
-    if (DEBUG)
-    {
-        Serial.println("Home found!");
-    }
-    engineRunning(engine, false);
-    
 }
 
 void engineGoHome(Engine *engine) {
     engineDirection(engine, BACKWARD);
-    while (engine->steps)
+    if (engine->steps && engine->validHome)
     {
         engineRunning(engine, true);
     }
@@ -51,18 +46,18 @@ void engineGoHome(Engine *engine) {
 }
 
 volatile unsigned long lastStepCount = 0;
-void engineStep(Engine *engine, unsigned long steps, bool direction) {
+void engineStep(Engine *engine, bool direction, bool *success) {
     engineDirection(engine, direction);
-    engine->steps = steps;
-    while (engine->steps)
-    {
+    if (engine->steps > 0) {
+        *success = false;
         engineRunning(engine, true);
-        if (lastStepCount != engine->steps)
+        if (lastStepCount != engine->steps && DEBUG)
         {
-            Serial.print("Steps left: ");
-            Serial.println(engine->steps);
+            //logLine(String("Steps left: ") + engine->steps);
             lastStepCount = engine->steps;
         }
+    } else {
+        *success = true;
+        engineRunning(engine, false);
     }
-    engineRunning(engine, false);
 }

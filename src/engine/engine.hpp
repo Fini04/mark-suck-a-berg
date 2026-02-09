@@ -28,6 +28,7 @@ void engineRunning(Engine *engine, bool running);
 void engineDirection(Engine *engine, bool direction);
 void engineGoHome(Engine *engine); //not recomendet to use because of inaccuracy of the physical build. Use engineFindHome() instat
 void engineFindHome(Engine *engine);
-void engineStep(Engine *engine, unsigned long steps, bool direction);
+void engineStep(Engine *engine, bool direction, bool *success);
+void logLine(const String &line);
 
 #endif

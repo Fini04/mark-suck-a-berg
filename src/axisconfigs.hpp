@@ -12,7 +12,7 @@ Engine axisX = {
     .pinOutBackward = 32,
     .pinInputHome = 36, //Input only pin
     .pinInputRotationFeedback = 39, //Input only pin
-    .stepsPerRotation = 200,
+    .stepsPerRotation = 3,
     .maxStepps = 1000
   },
   .steps = 0,
@@ -30,7 +30,7 @@ Engine axisY = {
     .pinOutBackward = 26,
     .pinInputHome = 34, //Input only pin
     .pinInputRotationFeedback = 35, //Input only pin
-    .stepsPerRotation = 200,
+    .stepsPerRotation = 3,
     .maxStepps = 1000
   },
   .steps = 0,
