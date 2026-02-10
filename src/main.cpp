@@ -222,7 +222,7 @@ static void setupServer()
 }
 
 const int LINES = 2;
-const int X_STEPS = 7;
+const int X_STEPS = 8;
 const int Y_STEPS = 28;
 
 int cycle = 0;
